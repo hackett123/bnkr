@@ -18,22 +18,34 @@
         }
 
         function balances() {
+            var agg = 0.0
             $.get('balance', (data, status) => {
                 data.accounts.forEach(account => {
                     console.log(account.bank)
                     bank = account.bank
                     account.balance.accounts.forEach(account => {
                         console.log(account.name)
-                        console.log(account.balances.available)
                         console.log(account.balances.current)
+                        
+                        if (account.name.includes("credit")) {
+                            agg -= account.balances.current
+                        } else {
+                            agg += account.balances.current
+                        }
+
                         var accountHtml = addAccountInfo(bank,
                             account.name, account.balances.current)
                         console.log(accountHtml)
                         $('#accounts').append(accountHtml)
                     })
-
                 })
+                showAgg(agg)
             })
+        }
+
+        function showAgg(agg) {
+            showClass('aggregate')
+            $('#aggregate').html('Your aggregate worth is $' + agg)
         }
 
     </script>
@@ -48,6 +60,8 @@
         </article>
         </hr>
         <a href='javascript:balances()'>Show Account Balances</a>
+    </hr>
+        <label id='aggregate' class='is-hidden'></label>
         <ul id='accounts'></ul>
     </div>
 </body>
