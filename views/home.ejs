@@ -8,13 +8,31 @@
 
         $(document).ready(function () {
             getMessage()
-            //getUser()
+            getUser()
         })
 
         function getUser() {
             $.get('get_user', (data, status) => {
                 user = data.user
-                if (data.user.is_admin) showClass("adminView")
+            })
+        }
+
+        function balances() {
+            $.get('balance', (data, status) => {
+                data.accounts.forEach(account => {
+                    console.log(account.bank)
+                    bank = account.bank
+                    account.balance.accounts.forEach(account => {
+                        console.log(account.name)
+                        console.log(account.balances.available)
+                        console.log(account.balances.current)
+                        var accountHtml = addAccountInfo(bank,
+                            account.name, account.balances.current)
+                        console.log(accountHtml)
+                        $('#accounts').append(accountHtml)
+                    })
+
+                })
             })
         }
 
@@ -28,6 +46,9 @@
             <button class="delete is-small" aria-label="delete" onclick="deleteMessage()"></button>
             <div class="message-body" id="msg"></div>
         </article>
+        </hr>
+        <a href='javascript:balances()'>Show Account Balances</a>
+        <ul id='accounts'></ul>
     </div>
 </body>
 

@@ -10,14 +10,18 @@ const ddb = new dynamoose.aws.sdk.DynamoDB({
 // Set DynamoDB instance to the Dynamoose DDB instance
 dynamoose.aws.ddb.set(ddb);
 
-const schema = new dynamoose.Schema({
+const userSchema = new dynamoose.Schema({
     "email": String, // primary key
     "password": String,
-    "items": [String] // item id
+    "items": {
+        "type": Set,
+        "schema": [String]
+    }
 }, {
-    "timestamps": true
+    "timestamps": true,
+    "saveUnknown": true
 })
 
-const User = dynamoose.model('bnkr_user', schema)
+const User = dynamoose.model('bnkr_user', userSchema)
 
 module.exports = User
