@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <% include ./head_imports.html %>
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+            getMessage()
+            //getUser()
+        })
+
+        function getUser() {
+            $.get('get_user', (data, status) => {
+                user = data.user
+                if (data.user.is_admin) showClass("adminView")
+            })
+        }
+
+    </script>
+</head>
+
+<body>
+    <% include ./header.html %>
+    <div class="container">
+        <article class="message is-info is-small is-hidden" id="msgBlock">
+            <button class="delete is-small" aria-label="delete" onclick="deleteMessage()"></button>
+            <div class="message-body" id="msg"></div>
+        </article>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <% include head_imports.html%>
+    <script type="text/javascript">
+
+        function login() {
+            $.post("/login", {
+                "email": $("#email").val(),
+                "password": $("#password").val()
+            }, (data, status) => {
+                
+                if (data.user) {
+                    goHome("Welcome to bnkr, " + data.user.email + "!")
+                } else {
+                    if (data == "wrong password") {
+                        markInvalid('password')
+                        markValid('email')
+                    } else {
+                        console.log(data)
+                        markInvalid('email')
+                        markInvalid('password')
+                    }
+                }
+            })
+        }
+        
+        function clearFields() {
+            $("#email").val("");
+            $("#password").val("");
+        }
+
+        $(document).ready(function () {
+            clearFields();
+        })
+
+    </script>
+</head>
+
+<body>
+    <% include header.html %>
+    <div class="container">
+        <div class="box">
+            <div class="field">
+                <label class="label">Email</label>
+                <div class="control has-icons-left">
+                    <input class="input" type="email" id="email">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-envelope"></i>
+                    </span>
+                </div>
+                <p class="help is-danger is-hidden" id="emailInvalid">Email Invalid</p>
+            </div>
+    
+            <div class="field">
+                <label class="label">Password</label>
+                <p class="control has-icons-left">
+                    <input class="input" type="password" placeholder="Password" id="password">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-lock"></i>
+                    </span>
+                </p>
+                <p class="help is-danger is-hidden" id="passwordInvalid">Password Invalid</p>
+            </div>
+            <div class="control">
+                <button class="button is-link" onclick="login()">Log In</button>
+            </div>
+        </div>
+        <div class="box">
+            No account? <a href="/signup">Sign up here</a>.
+        </div>
+    </div>
+</body>
+
+</html>

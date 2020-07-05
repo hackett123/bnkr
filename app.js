@@ -3,7 +3,8 @@
 var util = require('util');
 
 var envvar = require('envvar');
-var express = require('express');
+var express = require('express')
+var session = require('express-session')
 var bodyParser = require('body-parser');
 var moment = require('moment');
 var plaid = require('plaid');
@@ -63,11 +64,23 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 app.use(bodyParser.json());
+app.use(session({
+	resave: false,
+	saveUnitialized: false,
+	secret: "don't tell!"
+}))
 
 var server = app.listen(APP_PORT, function () {
     console.log('bnkr server listening on port ' + APP_PORT);
 });
 
 var routes = require('./routes/routes.js')
+var user_routes = require('./routes/user_routes.js')
 
 app.get('/', routes.get_splash)
+app.get('/login', routes.get_login)
+app.get('/home', routes.get_home)
+app.post('/set_message', routes.set_message)
+app.get('/get_message', routes.get_message)
+
+app.post('/login', user_routes.login)
