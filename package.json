@@ -15,7 +15,7 @@
     "dynamoose": "^2.2.1",
     "ejs": "2.5.x",
     "envvar": "1.1.x",
-    "express": "4.16.x",
+    "express": "4.17.x",
     "express-session": "^1.17.1",
     "moment": "2.22.x",
     "nodemon": "^2.0.4",
